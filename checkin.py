@@ -12,9 +12,9 @@ HEADERS_BASE = {
     "origin": "https://glados.cloud",
     "referer": "https://glados.cloud/console/checkin",
     "user-agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "Mozilla/5.0 (Linux; Android 14) "
         "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/120.0.0.0 Safari/537.36"
+        "Chrome/120.0.0.0 Mobile Safari/537.36"
     ),
     "content-type": "application/json;charset=UTF-8",
 }
@@ -103,7 +103,7 @@ def main():
                 ok += 1
                 points = j.get("points", "-")
                 status = "✅ 成功"
-            elif "repeat" in msg_lower or "already" in msg_lower:
+            elif j.get("repeated") or "repeat" in msg_lower or "already" in msg_lower or "return tomorrow" in msg_lower:
                 repeat += 1
                 status = "🔁 已签到"
             else:
