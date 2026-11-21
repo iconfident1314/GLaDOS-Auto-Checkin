@@ -109,6 +109,8 @@ def main():
             else:
                 fail += 1
                 status = "❌ 失败"
+                # 打印失败详情，便于从日志排查原因（只打印接口返回，不含 cookie）
+            print(f"[账号 {idx}] 签到失败详情: HTTP {r.status_code} | code={j.get('code')} | message={msg} | 原文={r.text[:300]}")
 
             # 状态接口（允许失败）
             s = session.get(STATUS_URL, headers=headers, timeout=TIMEOUT)
@@ -117,9 +119,10 @@ def main():
             if sj.get("leftDays") is not None:
                 days = f"{int(float(sj['leftDays']))} 天"
 
-        except Exception:
+        except Exception as e:
             fail += 1
             status = "❌ 异常"
+            print(f"[账号 {idx}] 签到异常: {e}")
 
         lines.append(f"{idx}. {email} | {status} | P:{points} | 剩余:{days}")
         time.sleep(random.uniform(1, 2))
